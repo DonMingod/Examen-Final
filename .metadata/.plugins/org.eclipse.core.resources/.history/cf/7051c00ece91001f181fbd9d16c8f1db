@@ -1,0 +1,11 @@
+package com.Repository;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.cibertec.model.Atencion;
+
+
+
+public class AtencionRepository extends JpaRepository<Atencion, Integer> {
+
+}

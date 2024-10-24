@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Registrar Paciente</title>
+</head>
+<body>
+    <h1 th:text="'Bienvenido, ' + ${paciente.nombre} + '!'"></h1>
+
+    <h2>Registrar nuevo paciente</h2>
+    <form th:action="@{/registrar}" method="get" th:object="${paciente}">
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" th:field="*{nombre}" required/><br/>
+
+        <label for="apellido">Apellido:</label>
+        <input type="text" id="apellido" th:field="*{apellido}" required/><br/>
+
+        <label for="direccion">Dirección:</label>
+        <input type="text" id="direccion" th:field="*{direccion}" required/><br/>
+
+        <label for="numero">Número:</label>
+        <input type="text" id="numero" th:field="*{numero}" required/><br/>
+
+        <button type="submit">Registrar</button>
+    </form>
+
+    <h3 th:if="${paciente.idPaciente != null}" th:text="'Paciente registrado: ' + ${paciente.nombre} + ' ' + ${paciente.apellido}"></h3>
+    

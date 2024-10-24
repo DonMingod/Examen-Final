@@ -1,0 +1,39 @@
+package com.cibertec.controller;
+
+import org.springframework.web.bind.annotation.ModelAttribute;
+
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.ui.Model;
+
+import com.cibertec.model.Paciente;
+import com.Repository.PacienteRepository;
+
+public class ProyectoController {
+	 @Autowired
+	    private PacienteRepository repos;
+	    
+	    @GetMapping("/Registro")
+	    public String registrarPaciente(@RequestParam(name="name", required=false, defaultValue="Paciente") String name, Model model) {
+	       
+	    	Paciente paci = new Paciente(); 
+	        paci.setId(1); 
+	        paci.setnombre("Luffy"); 
+	        paci.setapellido("Monkey"); 
+	        paci.setdireccion("Mar del Este");
+	        paci.setnumero("Yonkuo123");
+	        
+	    	paci=repos.save(paci);
+	        model.addAttribute("paciente", paci); 
+	        return "Registro";
+	    }
+	    
+	    @GetMapping("/listado")
+		public String listarPaciente(Model model) {
+			model.addAttribute("listarPaciente",repos.findAll());
+			return "listado";
+		}
+}

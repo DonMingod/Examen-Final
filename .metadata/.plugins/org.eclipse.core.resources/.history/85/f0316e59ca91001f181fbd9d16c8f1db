@@ -1,0 +1,26 @@
+package com.cibertec.servicio;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.Repository.PacienteRepository;
+import com.cibertec.model.Paciente;
+
+import jakarta.transaction.Transactional;
+
+@Service
+public class PacienteServicio {
+	@Autowired
+    private PacienteRepository pacienteRepository;
+
+    public Paciente registrarPaciente(Paciente paciente) {
+        return pacienteRepository.save(paciente);
+    }
+
+    public List<Paciente> listarPacientes() {
+        return pacienteRepository.findAll();
+    }
+
+}

@@ -1,0 +1,58 @@
+package com.cibertec.controller;
+
+
+import com.cibertec.model.Paciente;
+import com.cibertec.servicio.PacienteServicio;
+import com.Repository.PacienteRepository ;
+import java.io.FileNotFoundException;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.Repository.PacienteRepository;
+@RestController
+@RequestMapping ("/api/Paciente")
+public class ProyectoController {
+	  @Autowired
+	    private PacienteServicio pacienteServicio;
+	    
+	    @PostMapping("/add")
+	    public ResponseEntity<Paciente> addPaciente(@RequestBody Paciente paciente) throws Exception {
+	        Paciente pacienteSaveToDB = pacienteServicio.registrarPaciente(paciente);
+	        return new ResponseEntity<>(pacienteSaveToDB, HttpStatus.CREATED);
+	    }
+
+ 
+	  @GetMapping("/listar")
+	    public ResponseEntity<List<Paciente>> listarPacientes() {
+	        return ResponseEntity.ok(pacienteServicio.listarPacientes());
+	    }
+	    
+	    public ResponseEntity<String> registrarPaciente(@RequestBody Paciente paciente) {
+	        try {
+	            // Registra el paciente en la base de datos
+	            Paciente nuevoPaciente = pacienteServicio.registrarPaciente(paciente);
+	            
+	            // Genera la constancia en PDF
+	            String pdfFilePath = pacienteServicio.generarConstanciaPDF(nuevoPaciente);
+
+	            return ResponseEntity.ok("Paciente registrado exitosamente. PDF generado en: " + pdfFilePath);
+	        } catch (FileNotFoundException e) {
+	            e.printStackTrace();
+	            return ResponseEntity.status(404).body("Error: Archivo PDF no encontrado.");
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	            return ResponseEntity.status(500).body("Error al registrar el paciente o generar el PDF.");
+	        }
+	    }
+	   
+	
+}

@@ -1,0 +1,45 @@
+package com.cibertec.controller;
+
+
+import com.cibertec.model.Paciente;
+import com.cibertec.servicio.PacienteServicio;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.Repository.PacienteRepository;
+@RestController
+@RequestMapping ("/api/Paciente")
+public class ProyectoController {
+	  @Autowired
+	    private PacienteServicio pacienteServicio;
+	    
+	  @PostMapping("/add")
+	    public ResponseEntity<Paciente> savePaciente(@RequestBody Paciente paciente) throws Exception {
+	        Paciente pacienteSaveToDB = this.pacienteServicio.addPaciente(paciente);
+	        return new ResponseEntity<>(pacienteSaveToDB, HttpStatus.CREATED);
+	    }
+	
+	    @PostMapping("/registrar")
+	    public ResponseEntity<Paciente> registrarPaciente(@RequestBody Paciente paciente) {
+	        Paciente nuevoPaciente = pacienteServicio.registrarPaciente(paciente);
+	        // Lógica para generar PDF
+	        return ResponseEntity.ok(nuevoPaciente);
+	    }
+	    
+	    @GetMapping("/listar")
+	    public List<Paciente> listarPacientes() {
+	        return pacienteServicio.listarPaciente();
+	    }
+	   
+	
+}
